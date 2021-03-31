@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.8
+#!/usr/bin/python3.8
 
 import sys
 import os
@@ -21,60 +21,13 @@ end_time = args.end_time
 prefix = args.prefix
 target_dir = args.target_dir
 
-if not os.path.isdir(target_dir):
-    print(target_dir + "is not a valid directory.")
-    sys.exit(os.EX_OSFILE)
-
-if not os.path.isfile(in_file):
-    print(in_file + " is not a valid file.")
-    sys.exit(os.EX_OSFILE)
-
-def findNextNumberOutfile(f):
-    import re
-
-    print("Checking if \'" + f + "\' is a file")
-    if not os.path.isfile(f):
-        print("\'" + f + "\' is not a file")
-        print("returning: " + f)
-        return f
-
-    m = re.search(r'(?:[/ ]){prefix}-(\d+)', f)
-    if not m:
-        print("Could not find a number")
-        print("returning: " + f)
-        return f
-
-    print("Number is " + str(m) + ".")
-    print(m.group(1))
-    num = int(m.group(1))
-    num += 1
-
-    #find suffix
-    basename = os.path.splitext(in_name)[0]
-    extension = os.path.splitext(in_name)[1]
-    
-    f2 = target_dir + "/" + prefix + "-" + basename + "-" + str(num) + "." + extension
-
-    print("Checking if \'" + f2 + "\' is a file")
-    if not os.path.isfile(f2):
-        print("\'" + f2 + "\' is not a file")
-        print("returning: " + f2)
-        return f2
-    else:
-        return findNextNumberOutfile(f2)
-
 in_name = os.path.basename(in_file)
-basename = os.path.splitext(in_name)[0]
-extension = os.path.splitext(in_name)[1]
 
-f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
-out_file = findNextNumberOutfile(f)
+out_file = target_dir + "/" + prefix + in_name
+if os.path.isfile(out_file):
+    out_file = target_dir + "/" + prefix + "-2." + in_name
 
 print("out_file: " + out_file)
 
 clip = VideoFileClip(in_file).subclip(start_time, end_time)
 clip.write_videofile(out_file)
-
-print("finished parsing video")
-
-sys.exit(os.EX_OK)
