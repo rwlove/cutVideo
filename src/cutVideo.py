@@ -46,9 +46,9 @@ def findNextNumberOutfile(f):
         print("returning: " + f)
         return f
 
-    print("Number is " + str(m) + ".")
-    print(m.group(3))
-    num = int(m.group(3))
+    print("Number is " + str(m.group(2)) + ".")
+    print(m.group(2))
+    num = int(m.group(2))
     num += 1
 
     basename = os.path.splitext(in_name)[0]
