@@ -40,15 +40,15 @@ def findNextNumberOutfile(f):
         print("returning: " + f)
         return f
 
-    m = re.search(r'(?:[/ ]){prefix}-(.*)-(\d+)\..*', f)
+    m = re.search(r'(?:[/ ]' + prefix + '-(.*)-(\d+)\..*', f)
     if not m:
         print("Could not find a number")
         print("returning: " + f)
         return f
 
     print("Number is " + str(m) + ".")
-    print(m.group(1))
-    num = int(m.group(1))
+    print(m.group(3))
+    num = int(m.group(3))
     num += 1
 
     basename = os.path.splitext(in_name)[0]
