@@ -32,7 +32,7 @@ spec:
       containers:
       - name: cutvideo
         image: rwlove/cutvideo:latest
-        command: ["/bin/cutVideo.py", "-f", "{{file_name}}", "-s", "{{start_time}}", "-e", "{{end_time}}", "-p", "{{prefix}}" ]
+        command: ["/bin/cutVideo.py", "-f", "{{file_name}}", "-s", "{{start_time}}", "-e", "{{end_time}}", "-p", "{{prefix}}", "-d", "{{target_dir}}" ]
         volumeMounts:
         - name: nfs-brain
           mountPath: /mnt/brain
