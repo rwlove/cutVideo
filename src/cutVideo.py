@@ -63,12 +63,10 @@ def findNextNumberOutfile(f):
     else:
         return findNextNumberOutfile(f2)
 
-
-
-f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
-
 basename = os.path.splitext(in_name)[0]
 extension = os.path.splitext(in_name)[1]
+f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
+
 print("in_name: " + in_name)
 print("basename: " + basename)
 print("extension: " + extension)
