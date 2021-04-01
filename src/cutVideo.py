@@ -48,7 +48,12 @@ def findNextNumberOutfile(f):
     print(m.group(1))
     num = int(m.group(1))
     num += 1
-    f2 = target_dir + prefix + "-" + str(num) + "." + in_name
+
+    #find suffix
+    basename = os.path.splitext(in_name)[0]
+    extension = os.path.splitext(in_name)[1]
+    
+    f2 = target_dir + "/" + prefix + "-" + basename + "-" + str(num) + "." + extension
 
     print("Checking if \'" + f2 + "\' is a file")
     if not os.path.isfile(f2):
@@ -59,15 +64,17 @@ def findNextNumberOutfile(f):
         return findNextNumberOutfile(f2)
 
 in_name = os.path.basename(in_file)
+basename = os.path.splitext(in_name)[0]
+extension = os.path.splitext(in_name)[1]
 
-out_file = target_dir + "/" + prefix + in_name
-if os.path.isfile(out_file):
-    out_file = target_dir + "/" + prefix + "-2." + in_name
-
-f = "/mnt/vmheart/Download/Porn/" + prefix + "-1." + in_name
+f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
 out_file = findNextNumberOutfile(f)
 
 print("out_file: " + out_file)
 
 clip = VideoFileClip(in_file).subclip(start_time, end_time)
 clip.write_videofile(out_file)
+
+print("finished parsing video")
+
+sys.exit(os.EX_OK)
