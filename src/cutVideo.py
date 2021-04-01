@@ -40,7 +40,7 @@ def findNextNumberOutfile(f):
         print("returning: " + f)
         return f
 
-    m = re.search(r'(?:[/ ]){prefix}-(\d+)', f)
+    m = re.search(r'(?:[/ ]){prefix}-(.*)-(\d+)\..*', f)
     if not m:
         print("Could not find a number")
         print("returning: " + f)
