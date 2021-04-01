@@ -10,10 +10,10 @@ RUN mkdir -p /mnt/vmheart /mnt/brain
 WORKDIR /mnt
 
 # copy the dependencies file to the working directory
-#COPY requirements.txt .
+COPY requirements.txt .
 
 # install dependencies
-#RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # copy the content of the local src directory to the working directory
 COPY src/cutVideo.py /bin/cutVideo.py
