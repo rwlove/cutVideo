@@ -53,7 +53,7 @@ def findNextNumberOutfile(f):
 
     basename = os.path.splitext(in_name)[0]
     extension = os.path.splitext(in_name)[1]
-    f2 = target_dir + "/" + prefix + "-" + basename + "-" + str(num) + "." + extension
+    f2 = target_dir + "/" + prefix + "-" + basename + "-" + str(num) + extension
 
     print("Checking if \'" + f2 + "\' is a file")
     if not os.path.isfile(f2):
@@ -65,7 +65,7 @@ def findNextNumberOutfile(f):
 
 basename = os.path.splitext(in_name)[0]
 extension = os.path.splitext(in_name)[1]
-f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
+f = target_dir + "/" + prefix + "-" + basename + "-1" + extension
 
 print("in_name: " + in_name)
 print("basename: " + basename)
