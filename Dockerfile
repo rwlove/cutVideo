@@ -1,8 +1,13 @@
 # set base image (host OS)
 FROM python:3.8
 
+RUN pip install moviepy
+
 # set the working directory in the container
-WORKDIR /code
+
+RUN mkdir -p /mnt/vmheart /mnt/brain
+
+WORKDIR /mnt
 
 # copy the dependencies file to the working directory
 #COPY requirements.txt .
@@ -14,4 +19,4 @@ WORKDIR /code
 COPY src/cutVideo.py /bin/cutVideo.py
 
 # command to run on container start
-CMD [ "python", "./server.py" ]
+CMD [ "/bin/cutVideo.py", "--help" ]
