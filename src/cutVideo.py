@@ -23,11 +23,15 @@ target_dir = args.target_dir
 
 in_name = os.path.basename(in_file)
 
-out_file = target_dir + "/" + prefix + in_name
-if os.path.isfile(out_file):
-    out_file = target_dir + "/" + prefix + "-2." + in_name
+f = target_dir + "/" + prefix + "-" + basename + "-1." + extension
 
-print("out_file: " + out_file)
+print("in_name: " + in_name)
+print("basename: " + basename)
+print("extension: " + extension)
+print("f: " + f)
+
+out_file = findNextNumberOutfile(f)
+print("out_file (final): " + out_file)
 
 clip = VideoFileClip(in_file).subclip(start_time, end_time)
 clip.write_videofile(out_file)
