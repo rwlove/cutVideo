@@ -93,4 +93,9 @@ printSuccessfulJobsTable()
 if num_printed > 0:
     print()
 
+def printSuccessfulJobsTable():
+    printJobsTable("Completed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}'")
+
+printFailedJobsTable()
+printSuccessfulJobsTable()
 printRunningJobsTable()
