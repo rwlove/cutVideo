@@ -74,5 +74,9 @@ def printFailedJobsTable():
 def printRunningJobsTable():
     printJobsTable("Running Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.active==1)].metadata.name}'")
 
+def printSuccessfulJobsTable():
+    printJobsTable("Completed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}'")
+
 printFailedJobsTable()
+printSuccessfulJobsTable()
 printRunningJobsTable()
