@@ -28,55 +28,69 @@ class Command:
         self.cmd_list[5] = e
 
     def toList(self):
-        return self.cmd_list
+        return self.cmd_list.copy()
 
+def getTokenFromCmd(cmd, regex):
+    m = re.compile(regex)
+    g = m.search(cmd)
+    return g.group(1)
+
+###
+# Convert a single job to a list
 def convertCommandToList(job_name, cmds):
     c = Command()
-    cmd_list = list(cmds.decode('ascii').split(" "))
-    for job_cmd in cmd_list:
-        job = job_cmd.replace('"','').replace('[/bin/cutVideo.py,','').replace(']','')
-        fs = re.compile('.*-f,(.*?)(?:,.*|$)')
-        ss = re.compile('.*-s,(.*?)(?:,.*|$)')
-        es = re.compile('.*-e,(.*?)(?:,.*|$)')
-        ps = re.compile('.*-p,(.*?)(?:,.*|$)')
-        ds = re.compile('.*-d,(.*?)(?:,.*|$)')
-        g = fs.search(job)
-        c.addSourceFile(g.group(1))
-        g = ss.search(job)
-        c.addStartTime(g.group(1))
-        g = es.search(job)
-        c.addEndTime(g.group(1))
-        g = ps.search(job)
-        c.addPrefix(g.group(1))
-        g = ds.search(job)
-        c.addDestDir(g.group(1))
-        c.addJobName(job_name)
-    return c
+    c.addJobName(job_name)
+        
+    job = cmds.decode('ascii').replace('"','').replace('[/bin/cutVideo.py,','').replace(']','')
 
+    tok = getTokenFromCmd(job, '.*-f,(.*?)(?:,.*|$)')
+    c.addSourceFile(tok)
+    tok = getTokenFromCmd(job, '.*-s,(.*?)(?:,.*|$)')
+    c.addStartTime(tok)
+    tok = getTokenFromCmd(job, '.*-e,(.*?)(?:,.*|$)')
+    c.addEndTime(tok)
+    tok = getTokenFromCmd(job, '.*-p,(.*?)(?:,.*|$)')
+    c.addPrefix(tok)        
+    tok = getTokenFromCmd(job, '.*-d,(.*?)(?:,.*|$)')
+    c.addDestDir(tok)
+
+    return c.toList()
+
+###
+# Process a single job/command
 def getJobAsList(job):
     kubectl_cmd = "kubectl -n default get job %s -o jsonpath='{.spec.template.spec.containers[0].command}'" % job
     cmds = subprocess.check_output(kubectl_cmd, shell=True)
-    c = convertCommandToList(job, cmds)
-    return c.toList()
+    return convertCommandToList(job, cmds)
 
 def printJobsTable(title, s):
+    l = []
     out = subprocess.check_output(s, shell=True)
     if out:
         jobs = list(out.decode('ascii').split(" "))
-        l = []
-        for job_cmd in jobs:
-            l.append(getJobAsList(job_cmd))
+        for job in jobs:
+            j = getJobAsList(job)
+            l.append(j)
         print(tabulate(l,headers=[title, "Source", "Destination", "Prefix", "Start", "End"]))
+    return len(l)
 
 def printFailedJobsTable():
-    printJobsTable("Failed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.failed>0)].metadata.name}'")
+    return printJobsTable("Failed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.failed>0)].metadata.name}'")
 
 def printRunningJobsTable():
-    printJobsTable("Running Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.active==1)].metadata.name}'")
+    return printJobsTable("Running Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.active==1)].metadata.name}'")
 
 def printSuccessfulJobsTable():
-    printJobsTable("Completed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}'")
+    return printJobsTable("Completed Job Name", "kubectl get jobs -o=jsonpath='{.items[?(@.status.succeeded==1)].metadata.name}'")
 
-printFailedJobsTable()
+num_printed = printFailedJobsTable()
+
+if num_printed > 0:
+    print()
+    
 printSuccessfulJobsTable()
+
+if num_printed > 0:
+    print()
+
 printRunningJobsTable()
