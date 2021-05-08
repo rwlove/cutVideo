@@ -38,6 +38,13 @@ spec:
           mountPath: /mnt/brain
         - name: nfs-vmheart
           mountPath: /mnt/vmheart
+        resources:
+          requests:
+            memory: 2000Mi
+            cpu: 1000m
+          limits:
+            memory: 3000Mi
+            cpu: 2000m
       volumes:
       - name: nfs-brain
         nfs:
