@@ -41,10 +41,10 @@ spec:
         resources:
           requests:
             memory: 2000Mi
-            cpu: 1000m
+            cpu: 1
           limits:
             memory: 3000Mi
-            cpu: 2000m
+            cpu: 2
       volumes:
       - name: nfs-brain
         nfs:
@@ -86,10 +86,13 @@ end_time = args.end_time
 prefix = args.prefix
 target_dir = args.target_dir
 
-in_name = os.path.basename(in_file)
-out_file = target_dir + "/" + prefix + "/" + in_name
+#print("in_file: {}".format(in_file))
+#print("target_dir: {}".format(target_dir))
+#print("prefix: {}".format(prefix))
+#in_name = os.path.basename(in_file)
+#out_file = target_dir + "/" + prefix + "/" + in_name
 
-print("Cutting file: {}, from {} to {} and writing out to {}".format(in_name, start_time, end_time, out_file))
+#print("Cutting file: {}, from {} to {} and writing out to {}".format(in_name, start_time, end_time, out_file))
 
 template = Template(TMPL)
 
