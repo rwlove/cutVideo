@@ -31,7 +31,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: cutvideo
-        image: rwlove/cutvideo:latest
+        image: brain:5000/cutvideo:latest
         command: ["/bin/cutVideo.py", "-f", "{{file_name}}", "-s", "{{start_time}}", "-e", "{{end_time}}", "-p", "{{prefix}}", "-d", "{{target_dir}}" ]
         volumeMounts:
         - name: nfs-brain

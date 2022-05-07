@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker build -t rwlove/cutvideo .
+buildah build --format=docker -f Dockerfile -t brain:5000/cutVideo .
 
-docker push rwlove/cutvideo:latest
+buildah push --tls-verify=false brain:5000/cutvideo:latest
