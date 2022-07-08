@@ -5,7 +5,7 @@ RUN pip install moviepy
 
 # set the working directory in the container
 
-RUN mkdir -p /mnt/vmheart /mnt/brain
+RUN mkdir -p /mnt/vmheart /mnt/brain /mnt/beast
 
 WORKDIR /mnt
 

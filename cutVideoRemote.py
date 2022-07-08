@@ -38,6 +38,8 @@ spec:
           mountPath: /mnt/brain
         - name: nfs-vmheart
           mountPath: /mnt/vmheart
+        - name: nfs-beast
+          mountPath: /mnt/beast
         resources:
           requests:
             memory: 2000Mi
@@ -56,6 +58,11 @@ spec:
           # URL for the NFS server
           server: vmheart.thesteamedcrab.com
           path: /mnt/sda
+      - name: nfs-beast
+        nfs:
+          # URL for the NFS server
+          server: beast.thesteamedcrab.com
+          path: /mnt/mass_storage
 """
 
 # Configs can be set in Configuration class directly or using helper utility
